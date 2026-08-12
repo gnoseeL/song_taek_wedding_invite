@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", system-ui,
+    sans-serif;
+  --color-invite-bg: #faf7f2;
+  --color-invite-ink: #3d342c;
+  --color-invite-muted: #8a7d70;
+  --color-invite-accent: #c4a484;
+  --breakpoint-pc: 64rem;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-invite-bg);
+  color: var(--color-invite-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
