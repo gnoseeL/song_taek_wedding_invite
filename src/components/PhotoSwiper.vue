@@ -5,13 +5,18 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
-const modules = [Navigation, Pagination]
+defineProps({
+  photos: {
+    type: Array,
+    required: true,
+  },
+  initialSlide: {
+    type: Number,
+    default: 0,
+  },
+})
 
-const slides = [
-  { id: 1, label: '사진 1' },
-  { id: 2, label: '사진 2' },
-  { id: 3, label: '사진 3' },
-]
+const modules = [Navigation, Pagination]
 </script>
 
 <template>
@@ -19,16 +24,19 @@ const slides = [
     :modules="modules"
     :slides-per-view="1"
     :space-between="12"
-    :loop="true"
+    :loop="photos.length > 1"
+    :initial-slide="initialSlide"
     navigation
     pagination
-    class="photo-swiper overflow-hidden rounded-2xl"
+    class="photo-swiper h-full w-full"
   >
-    <SwiperSlide v-for="slide in slides" :key="slide.id">
-      <div
-        class="flex aspect-[3/4] items-center justify-center bg-invite-accent/30 text-invite-muted"
-      >
-        {{ slide.label }}
+    <SwiperSlide v-for="photo in photos" :key="photo.id">
+      <div class="flex h-full items-center justify-center px-4">
+        <img
+          :src="photo.src"
+          :alt="photo.alt"
+          class="max-h-[80dvh] w-full object-contain"
+        />
       </div>
     </SwiperSlide>
   </Swiper>
@@ -36,11 +44,21 @@ const slides = [
 
 <style scoped>
 .photo-swiper :deep(.swiper-pagination-bullet) {
-  background: #3d342c;
+  background: #ffffff;
+  opacity: 0.45;
+}
+
+.photo-swiper :deep(.swiper-pagination-bullet-active) {
+  opacity: 1;
 }
 
 .photo-swiper :deep(.swiper-button-next),
 .photo-swiper :deep(.swiper-button-prev) {
-  color: #3d342c;
+  color: #ffffff;
+}
+
+.photo-swiper :deep(.swiper-button-next::after),
+.photo-swiper :deep(.swiper-button-prev::after) {
+  font-size: 1.25rem;
 }
 </style>

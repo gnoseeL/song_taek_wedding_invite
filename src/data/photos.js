@@ -1,0 +1,30 @@
+const filenames = [
+  'img_01.jpg',
+  'img_02.jpg',
+  'img_03.jpg',
+  'img_04.jpg',
+  'img_05.jpg',
+  'img_06.jpg',
+  'img_07.jpg',
+  'img_08.jpg',
+  'img_09.jpg',
+  'img_10.jpg',
+  'img_11.jpg',
+  'img_12.jpg',
+  'img_13.jpg',
+  'img_14.jpg',
+  'img_15.jpg',
+  'img_16.jpg',
+  'img_17.jpg',
+  'img_18.jpg',
+  'img_19.jpg',
+  'img_20.jpg',
+  'img_21.jpg',
+  'img_22.jpg',
+]
+
+export const photos = filenames.map((name, index) => ({
+  id: index + 1,
+  src: `/images/photo/${encodeURIComponent(name)}`,
+  alt: `웨딩 사진 ${index + 1}`,
+}))

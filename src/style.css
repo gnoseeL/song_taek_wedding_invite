@@ -1,25 +1,241 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", system-ui,
-    sans-serif;
-  --color-invite-bg: #faf7f2;
-  --color-invite-ink: #3d342c;
-  --color-invite-muted: #8a7d70;
-  --color-invite-accent: #c4a484;
-  --breakpoint-pc: 64rem;
+
+  /* Colors */
+  --color-default: black;
+  --color-primary1: #fa5514;
+  --color-primary2: #fee6dc;
+  --color-secondary1: #8fab00;
+
+  /* --color-info: #2950B1;  */
+  --color-positive: #1baa3f;
+  --color-error: #e80000;
+  /* --color-notice: #F9482D; */
+
+  --color-gray1: #e3e2df;
+  --color-gray2: #d1d0cd;
+  --color-gray3: #c0bfbc;
+  --color-gray4: #afaeab;
+  --color-gray5: #959491;
+  --color-gray6: #72716e;
+  --color-gray7: #585754;
+  --color-gray8: #353431;
+  --color-gray9: #1b1a17;
+  /* --color-gray10: #e9ecef;  */
+
+  --color-black: #000000;
+  --color-white: #ffffff;
+
+  --color-beige1: #f4f3f0;
+  --color-beige2: #eceae5;
+  --color-beige3: #e5e3dc;
+  --color-beige4: #dad7cd;
+
+  /* Font Weight */
+  /* --font-weight-default: 400;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700; */
+
+  /* Size */
+  --size-18: 1.125rem;
+
+  /* Width */
+  --width-large: 1280px;
+  --width-medium: 1140px;
+  --width-small: 530px;
+
+  /* Keyframes */
+  @keyframes company-brand-scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Animation */
+  --animate-company-brand-scroll: company-brand-scroll 130s linear infinite;
+  --animate-fade-in: fade-in 1.5s ease-out both;
+
+  /* Box Shadow */
+  --shadow-custom: 0px 0px 24px 0px rgba(0, 0, 0, 0.1);
 }
 
-html,
-body,
-#app {
-  min-height: 100%;
+/* 커스텀 variant 정의 - breakpoint 변수 활용 */
+@custom-variant pc (@media (min-width: 64.0625rem));
+@custom-variant mo (@media (max-width: 64rem));
+
+@layer base {
+  * {
+    font-family: var(--font-default-family), sans-serif;
+  }
+  html {
+    @apply text-gray9 bg-beige1 font-normal;
+    font-family: var(--font-default-family), sans-serif;
+  }
+  html[lang='ko'] {
+    font-family: var(--font-default-family), sans-serif;
+  }
+  /* 스크롤바 생성시 웹페이지 위치 이동 방지 100vw - 스크롤바넓이 */
+  @variant pc {
+    body {
+      width: calc(100vw - 13px);
+    }
+  }
+
+  /* tailwind reset css가 완벽하지 않아서 추가해야함 */
+  input {
+    /* appearance: none;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0; */
+    @apply appearance-none rounded-none outline-none;
+  }
+  input:focus {
+    @apply outline-none;
+  }
+
+  /* number type: spin 버튼 제거 */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    /* appearance: none;
+    -webkit-appearance: none; */
+    @apply appearance-none;
+  }
+
+  em {
+    @apply not-italic;
+  }
+  table caption {
+    @apply hidden size-0 overflow-hidden text-transparent opacity-0;
+  }
+
+  a, a:hover {
+    color: unset;
+  }
+
+  b,
+  strong {
+    @apply font-semibold;
+  }
+
+  button {
+    @apply cursor-pointer;
+  }
+
+  @variant pc {
+    /* body scrollbar setting */
+    *::-webkit-scrollbar {
+      width: 13px;
+    }
+
+    *::-webkit-scrollbar-thumb {
+      background: var(--color-gray1);
+      background-clip: padding-box;
+      border: 5px solid transparent;
+      box-shadow: 0px 0px 0px 1px rgba(255 255 255 0.1) inset;
+      -webkit-box-shadow: 0px 0px 0px 1px rgba(255 255 255 0.1) inset;
+      -moz-box-shadow: 0px 0px 0px 1px rgba(255 255 255 0.1) inset;
+    }
+
+    *::-webkit-scrollbar-thumb:hover {
+      background: var(--color-black);
+      background-clip: padding-box;
+      border: 5px solid transparent;
+    }
+
+    *::-webkit-scrollbar-track {
+      background: transparent;
+      border-left: 1px solid var(--color-beige2);
+    }
+
+    *::-webkit-scrollbar-corner {
+      display: none;
+    }
+  }
 }
 
-body {
-  margin: 0;
-  background-color: var(--color-invite-bg);
-  color: var(--color-invite-ink);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
+@layer utilities {
+  /* 1줄처리 */
+  .ellipsis {
+    @apply overflow-hidden text-ellipsis whitespace-nowrap;
+  }
+  /* 2줄 처리 */
+  .ellipsis-2 {
+    @apply line-clamp-2 block text-ellipsis whitespace-normal;
+    display: -webkit-box;
+  }
+  .text-overflow {
+    @apply line-clamp-2 break-words text-ellipsis;
+  }
 }
+
+/* 공통 폰트 사이즈 */
+@layer utilities {
+  .display1 {
+    @apply pc:text-[64px]/[70px] pc:tracking-[-1.28px] text-[44px]/[46px] tracking-[-.8px]; /* 40px, 64px*/
+  }
+  .heading1 {
+    @apply pc:text-5xl/[56px] pc:tracking-[-.96px] text-[32px]/[38px] font-semibold tracking-[-.32px]; /* 32px, 48px*/
+  }
+  .heading2 {
+    @apply pc:text-[40px]/[48px] pc:tracking-[-.8px] text-[28px]/[34px] font-semibold tracking-[-.28px]; /* 28px, 40px*/
+  }
+  .heading3 {
+    @apply pc:text-4xl/[44px] pc:tracking-[-.36px] text-2xl/[30px] font-semibold tracking-[-.24px]; /* 24px, 36px*/
+  }
+  .heading4 {
+    @apply pc:text-2xl/[30px] pc:tracking-[-.24px] text-xl/[26px] font-semibold; /* 20px, 24px*/
+  }
+  .title1 {
+    @apply pc:text-xl/[26px] text-base/[22px] font-semibold; /* 16px, 20px */
+  }
+  .title2 {
+    @apply pc:text-base/[22px] text-sm/[20px] font-semibold; /* 14px, 16px */
+  }
+  .title3 {
+    @apply pc:text-sm/[20px] text-[13px]/[18px] font-semibold; /* 13px, 14px */
+  }
+  .body1 {
+    @apply pc:text-xl/[26px] text-base/[22px]; /* 16px, 20px */
+  }
+  .body2 {
+    @apply pc:text-base/[22px] text-sm/[20px]; /* 14px, 16px */
+  }
+  .body3 {
+    @apply pc:text-sm/[20px] text-[13px]/[18px]; /* 13px, 14px */
+  }
+  .paragraph1 {
+    @apply pc:text-xl/[28px] text-base/[24px]; /* 16px, 20px */
+  }
+  .paragraph2 {
+    @apply pc:text-base/[24px] text-sm/[22px]; /* 14px, 16px */
+  } 
+  .paragraph3 {
+    @apply pc:text-sm/[22px] text-[13px]/[20px]; /* 13px, 14px */
+  }
+  .caption1 {
+    @apply pc:text-[13px]/[18px] text-xs/[16px] font-semibold; /* 12px, 13px */
+  }
+  .caption2 {
+    @apply pc:text-xs/[16px] text-[11px]/[15px] font-semibold; /* 11px, 12px */
+  }
+  .mini {
+    @apply pc:text-[11px]/[11px] text-[10px]/[10px] font-semibold; /* 10px, 11px */
+  }
+}
+
