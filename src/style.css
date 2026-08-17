@@ -186,19 +186,14 @@
 
 /* 공통 폰트 사이즈 */
 @layer utilities {
-  .display1 {
-    @apply pc:text-[64px]/[70px] pc:tracking-[-1.28px] text-[44px]/[46px] tracking-[-.8px]; /* 40px, 64px*/
-  }
+
   .heading1 {
-    @apply pc:text-5xl/[56px] pc:tracking-[-.96px] text-[32px]/[38px] font-semibold tracking-[-.32px]; /* 32px, 48px*/
-  }
-  .heading2 {
     @apply pc:text-[40px]/[48px] pc:tracking-[-.8px] text-[28px]/[34px] font-semibold tracking-[-.28px]; /* 28px, 40px*/
   }
-  .heading3 {
+  .heading2 {
     @apply pc:text-4xl/[44px] pc:tracking-[-.36px] text-2xl/[30px] font-semibold tracking-[-.24px]; /* 24px, 36px*/
   }
-  .heading4 {
+  .heading3 {
     @apply pc:text-2xl/[30px] pc:tracking-[-.24px] text-xl/[26px] font-semibold; /* 20px, 24px*/
   }
   .title1 {
@@ -206,9 +201,6 @@
   }
   .title2 {
     @apply pc:text-base/[22px] text-sm/[20px] font-semibold; /* 14px, 16px */
-  }
-  .title3 {
-    @apply pc:text-sm/[20px] text-[13px]/[18px] font-semibold; /* 13px, 14px */
   }
   .body1 {
     @apply pc:text-xl/[26px] text-base/[22px]; /* 16px, 20px */
@@ -218,15 +210,6 @@
   }
   .body3 {
     @apply pc:text-sm/[20px] text-[13px]/[18px]; /* 13px, 14px */
-  }
-  .paragraph1 {
-    @apply pc:text-xl/[28px] text-base/[24px]; /* 16px, 20px */
-  }
-  .paragraph2 {
-    @apply pc:text-base/[24px] text-sm/[22px]; /* 14px, 16px */
-  } 
-  .paragraph3 {
-    @apply pc:text-sm/[22px] text-[13px]/[20px]; /* 13px, 14px */
   }
   .caption1 {
     @apply pc:text-[13px]/[18px] text-xs/[16px] font-semibold; /* 12px, 13px */

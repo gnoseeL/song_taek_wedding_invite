@@ -27,7 +27,7 @@ const modules = [Navigation, Pagination]
     :loop="photos.length > 1"
     :initial-slide="initialSlide"
     navigation
-    pagination
+    :pagination="{ type: 'fraction' }"
     class="photo-swiper h-full w-full"
   >
     <SwiperSlide v-for="photo in photos" :key="photo.id">
@@ -35,7 +35,10 @@ const modules = [Navigation, Pagination]
         <img
           :src="photo.src"
           :alt="photo.alt"
-          class="max-h-[80dvh] w-full object-contain"
+          class="max-h-[80dvh] w-full touch-pan-x select-none object-contain"
+          draggable="false"
+          @dragstart.prevent
+          @contextmenu.prevent
         />
       </div>
     </SwiperSlide>
@@ -43,22 +46,26 @@ const modules = [Navigation, Pagination]
 </template>
 
 <style scoped>
-.photo-swiper :deep(.swiper-pagination-bullet) {
-  background: #ffffff;
-  opacity: 0.45;
+.photo-swiper img {
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
 }
 
-.photo-swiper :deep(.swiper-pagination-bullet-active) {
-  opacity: 1;
+.photo-swiper :deep(.swiper-pagination-fraction) {
+  color: #ffffff;
 }
 
 .photo-swiper :deep(.swiper-button-next),
 .photo-swiper :deep(.swiper-button-prev) {
+  --swiper-navigation-size: 24px;
   color: #ffffff;
 }
 
-.photo-swiper :deep(.swiper-button-next::after),
-.photo-swiper :deep(.swiper-button-prev::after) {
-  font-size: 1.25rem;
+.photo-swiper :deep(.swiper-button-next) { 
+  right: -5px;
+}
+
+.photo-swiper :deep(.swiper-button-prev) { 
+  left: -5px;
 }
 </style>

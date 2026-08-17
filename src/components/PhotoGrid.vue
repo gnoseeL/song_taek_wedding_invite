@@ -36,12 +36,12 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="grid grid-cols-2 gap-1.5">
+  <div class="grid grid-cols-3 gap-0.5">
     <button
       v-for="(photo, index) in photos"
       :key="photo.id"
       type="button"
-      class="aspect-[3/4] overflow-hidden bg-beige3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray8"
+      class="aspect-square overflow-hidden bg-beige3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray8"
       :aria-label="`${photo.alt} 크게 보기`"
       @click="openAt(index)"
     >
@@ -65,14 +65,25 @@ onUnmounted(() => {
     >
       <button
         type="button"
-        class="absolute right-4 top-4 z-10 text-white body2"
+        class="absolute right-4 top-4 z-10 flex size-10 items-center justify-center text-white"
         aria-label="닫기"
         @click="close"
       >
-        닫기
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          class="size-6"
+          aria-hidden="true"
+        >
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
       </button>
 
-      <div class="h-full w-full max-w-[520px] py-14">
+      <div class="h-full w-full max-w-[560px] py-14">
         <PhotoSwiper
           :key="initialIndex"
           :photos="photos"
