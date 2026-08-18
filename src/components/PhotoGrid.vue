@@ -83,7 +83,7 @@ onUnmounted(() => {
         </svg>
       </button>
 
-      <div class="h-full w-full max-w-[560px] py-14">
+      <div class="relative size-full max-w-[560px] py-14">
         <PhotoSwiper
           :key="initialIndex"
           :photos="photos"

@@ -1,6 +1,7 @@
 <script setup>
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Navigation, Pagination } from 'swiper/modules'
+import { useDevice } from '@/hooks/useDevice'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
@@ -16,22 +17,28 @@ defineProps({
   },
 })
 
+const { isMobile } = useDevice()
 const modules = [Navigation, Pagination]
 </script>
 
 <template>
   <Swiper
     :modules="modules"
-    :slides-per-view="1"
-    :space-between="12"
+    slides-per-view="auto"
+    centered-slides="true"
+    :space-between="8"
     :loop="photos.length > 1"
     :initial-slide="initialSlide"
-    navigation
+    :navigation="!isMobile"
     :pagination="{ type: 'fraction' }"
     class="photo-swiper h-full w-full"
   >
-    <SwiperSlide v-for="photo in photos" :key="photo.id">
-      <div class="flex h-full items-center justify-center px-4">
+    <SwiperSlide
+      v-for="photo in photos"
+      :key="photo.id"
+      class="!w-[calc(100%-48px)]"
+    >
+      <div class="flex h-full items-center justify-center">
         <img
           :src="photo.src"
           :alt="photo.alt"
@@ -49,6 +56,11 @@ const modules = [Navigation, Pagination]
 .photo-swiper img {
   -webkit-user-drag: none;
   -webkit-touch-callout: none;
+}
+
+.photo-swiper :deep(.swiper-pagination) {
+  top: auto;
+  bottom: 0;
 }
 
 .photo-swiper :deep(.swiper-pagination-fraction) {

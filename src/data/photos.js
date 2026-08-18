@@ -20,7 +20,6 @@ const filenames = [
   'img_19.jpg',
   'img_20.jpg',
   'img_21.jpg',
-  'img_22.jpg',
 ]
 
 export const photos = filenames.map((name, index) => ({
