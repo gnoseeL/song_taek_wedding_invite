@@ -14,7 +14,7 @@ const cells = [
 
 <template>
   <div class="px-8" role="grid" aria-label="2026년 12월 달력">
-    <p class="title2 mb-4 text-gray8">2026. 12</p>
+    <p class="body1 mb-4 text-gray8">2026. 12</p>
     <div class="grid grid-cols-7 text-center">
       <span
         v-for="day in weekdays"
@@ -26,7 +26,7 @@ const cells = [
       <span
         v-for="(day, index) in cells"
         :key="index"
-        class="relative flex h-10 items-center justify-center body3 text-gray7"
+        class="relative flex h-10 items-center justify-center body2 text-gray7"
       >
         <span
           v-if="day === weddingDay"

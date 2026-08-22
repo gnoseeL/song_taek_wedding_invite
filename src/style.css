@@ -4,33 +4,22 @@
 
   /* Colors */
   --color-default: black;
-  --color-primary1: #fa5514;
-  --color-primary2: #fee6dc;
-  --color-secondary1: #8fab00;
+  --color-primary1: #200b0b;
+  --color-primary2: #490000;
 
-  /* --color-info: #2950B1;  */
-  --color-positive: #1baa3f;
-  --color-error: #e80000;
-  /* --color-notice: #F9482D; */
-
-  --color-gray1: #e3e2df;
-  --color-gray2: #d1d0cd;
-  --color-gray3: #c0bfbc;
-  --color-gray4: #afaeab;
-  --color-gray5: #959491;
-  --color-gray6: #72716e;
-  --color-gray7: #585754;
-  --color-gray8: #353431;
-  --color-gray9: #1b1a17;
-  /* --color-gray10: #e9ecef;  */
+  --color-title: #0f0606;
+  --color-sub-title: #1a1a1a;
+  --color-description: #72716e;
 
   --color-black: #000000;
-  --color-white: #ffffff;
 
   --color-beige1: #f4f3f0;
-  --color-beige2: #eceae5;
-  --color-beige3: #e5e3dc;
-  --color-beige4: #dad7cd;
+  --color-beige2: #faf0e6;
+
+  /* Font */
+  --font-default-family: "Noto Serif KR";
+  --font-sans: "Noto Serif KR", serif;
+  --font-serif: "Noto Serif KR", serif;
 
   /* Font Weight */
   /* --font-weight-default: 400;
@@ -82,14 +71,14 @@
 
 @layer base {
   * {
-    font-family: var(--font-default-family), sans-serif;
+    font-family: var(--font-default-family), serif;
   }
   html {
-    @apply text-gray9 bg-beige1 font-normal;
-    font-family: var(--font-default-family), sans-serif;
+    @apply text-title bg-beige1 font-normal;
+    font-family: var(--font-default-family), serif;
   }
   html[lang='ko'] {
-    font-family: var(--font-default-family), sans-serif;
+    font-family: var(--font-default-family), serif;
   }
   /* 스크롤바 생성시 웹페이지 위치 이동 방지 100vw - 스크롤바넓이 */
   @variant pc {
@@ -186,39 +175,17 @@
 
 /* 공통 폰트 사이즈 */
 @layer utilities {
-
-  .heading1 {
-    @apply pc:text-[40px]/[48px] pc:tracking-[-.8px] text-[28px]/[34px] font-semibold tracking-[-.28px]; /* 28px, 40px*/
-  }
-  .heading2 {
-    @apply pc:text-4xl/[44px] pc:tracking-[-.36px] text-2xl/[30px] font-semibold tracking-[-.24px]; /* 24px, 36px*/
-  }
-  .heading3 {
-    @apply pc:text-2xl/[30px] pc:tracking-[-.24px] text-xl/[26px] font-semibold; /* 20px, 24px*/
-  }
   .title1 {
-    @apply pc:text-xl/[26px] text-base/[22px] font-semibold; /* 16px, 20px */
-  }
-  .title2 {
     @apply pc:text-base/[22px] text-sm/[20px] font-semibold; /* 14px, 16px */
   }
   .body1 {
-    @apply pc:text-xl/[26px] text-base/[22px]; /* 16px, 20px */
-  }
-  .body2 {
     @apply pc:text-base/[22px] text-sm/[20px]; /* 14px, 16px */
   }
-  .body3 {
-    @apply pc:text-sm/[20px] text-[13px]/[18px]; /* 13px, 14px */
-  }
-  .caption1 {
+  .body2 {
     @apply pc:text-[13px]/[18px] text-xs/[16px] font-semibold; /* 12px, 13px */
   }
-  .caption2 {
+  .body3 {
     @apply pc:text-xs/[16px] text-[11px]/[15px] font-semibold; /* 11px, 12px */
-  }
-  .mini {
-    @apply pc:text-[11px]/[11px] text-[10px]/[10px] font-semibold; /* 10px, 11px */
   }
 }
 

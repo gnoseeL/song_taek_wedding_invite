@@ -9,6 +9,7 @@ const PLACE = {
   placeId: '1064180088',
 }
 
+const CALLBACK_NAME = '__initNaverWeddingMap'
 const clientId = import.meta.env.VITE_NAVER_MAP_CLIENT_ID
 const mapEl = ref(null)
 const loadError = ref(!clientId)
@@ -17,8 +18,15 @@ const mapInstance = shallowRef(null)
 const naverMapUrl = `https://map.naver.com/p/entry/place/1064180088`
 const kakaoMapUrl = `https://place.map.kakao.com/1185379934`
 
+function fail() {
+  loadError.value = true
+}
+
 function initMap() {
-  if (!mapEl.value || !window.naver?.maps) return
+  if (!mapEl.value || !window.naver?.maps) {
+    fail()
+    return
+  }
 
   const position = new window.naver.maps.LatLng(PLACE.lat, PLACE.lng)
   const map = new window.naver.maps.Map(mapEl.value, {
@@ -40,24 +48,22 @@ function initMap() {
 }
 
 function loadScript() {
+  window.navermap_authFailure = fail
+
   if (window.naver?.maps) {
     initMap()
     return
   }
 
+  window[CALLBACK_NAME] = initMap
+
   const existing = document.getElementById('naver-map-script')
-  if (existing) {
-    existing.addEventListener('load', initMap)
-    return
-  }
+  if (existing) return
 
   const script = document.createElement('script')
   script.id = 'naver-map-script'
-  script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${clientId}`
-  script.onload = initMap
-  script.onerror = () => {
-    loadError.value = true
-  }
+  script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${encodeURIComponent(clientId)}&callback=${CALLBACK_NAME}`
+  script.onerror = fail
   document.head.appendChild(script)
 }
 
@@ -67,6 +73,10 @@ onMounted(() => {
 
 onUnmounted(() => {
   mapInstance.value?.destroy?.()
+  delete window[CALLBACK_NAME]
+  if (window.navermap_authFailure === fail) {
+    delete window.navermap_authFailure
+  }
 })
 </script>
 
@@ -87,7 +97,7 @@ onUnmounted(() => {
         rel="noopener noreferrer"
         class="flex h-[240px] w-full flex-col items-center justify-center gap-2 px-6 text-gray6"
       >
-        <p class="body2">지도를 불러오지 못했습니다.</p>
+        <p class="body1">지도를 불러오지 못했습니다.</p>
         <p class="caption1 text-primary1">네이버 지도에서 보기</p>
       </a>
     </div>
@@ -96,7 +106,7 @@ onUnmounted(() => {
       :href="naverMapUrl"
       target="_blank"
       rel="noopener noreferrer"
-      class="body2 text-gray7 underline underline-offset-4"
+      class="body1 text-gray7 underline underline-offset-4"
     >
       네이버 지도에서 보기
     </a>
@@ -104,7 +114,7 @@ onUnmounted(() => {
       :href="kakaoMapUrl"
       target="_blank"
       rel="noopener noreferrer"
-      class="body2 text-gray7 underline underline-offset-4"
+      class="body1 text-gray7 underline underline-offset-4"
     >
       Kakao 지도에서 보기
     </a>

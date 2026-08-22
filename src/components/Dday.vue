@@ -14,7 +14,7 @@ const remainingDays = computed(() => {
 </script>
 
 <template>
-  <p class="body2 inline-flex items-center justify-center gap-1 text-gray6">
+  <p class="body1 inline-flex items-center justify-center gap-1 text-gray6">
     송
     <svg
       xmlns="http://www.w3.org/2000/svg"
