@@ -13,8 +13,7 @@ const cells = [
 </script>
 
 <template>
-  <div class="px-8" role="grid" aria-label="2026년 12월 달력">
-    <p class="body1 mb-4 text-gray8">2026. 12</p>
+  <div class="py-1 border border-detail border-x-0" role="grid" aria-label="2026년 12월 달력">
     <div class="grid grid-cols-7 text-center">
       <span
         v-for="day in weekdays"
@@ -30,7 +29,7 @@ const cells = [
       >
         <span
           v-if="day === weddingDay"
-          class="absolute size-8 rounded-full border border-primary1 shadow-md"
+          class="absolute size-8 rounded-full border border-primary2 shadow-md"
           aria-hidden="true"
         />
         <span

@@ -4,12 +4,12 @@
 
   /* Colors */
   --color-default: black;
-  --color-primary1: #200b0b;
-  --color-primary2: #490000;
+  --color-primary1: #660202;
 
   --color-title: #0f0606;
   --color-sub-title: #1a1a1a;
   --color-description: #72716e;
+  --color-detail: #adadad;
 
   --color-black: #000000;
 
@@ -22,11 +22,11 @@
   --font-serif: "Noto Serif KR", serif;
 
   /* Font Weight */
-  /* --font-weight-default: 400;
+  --font-weight-default: 400;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
-  --font-weight-bold: 700; */
+  --font-weight-bold: 700;
 
   /* Size */
   --size-18: 1.125rem;
@@ -158,25 +158,14 @@
   }
 }
 
-@layer utilities {
-  /* 1줄처리 */
-  .ellipsis {
-    @apply overflow-hidden text-ellipsis whitespace-nowrap;
-  }
-  /* 2줄 처리 */
-  .ellipsis-2 {
-    @apply line-clamp-2 block text-ellipsis whitespace-normal;
-    display: -webkit-box;
-  }
-  .text-overflow {
-    @apply line-clamp-2 break-words text-ellipsis;
-  }
-}
 
 /* 공통 폰트 사이즈 */
 @layer utilities {
   .title1 {
     @apply pc:text-base/[22px] text-sm/[20px] font-semibold; /* 14px, 16px */
+  }
+  .title2 {
+    @apply pc:text-xl/[26px] text-base/[22px] font-semibold; /* 18px, 20px */
   }
   .body1 {
     @apply pc:text-base/[22px] text-sm/[20px]; /* 14px, 16px */
