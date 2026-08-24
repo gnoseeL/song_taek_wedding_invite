@@ -1,7 +1,7 @@
 <script setup>
 import Hero from '@/components/Hero.vue'
 import Title from '@/components/Title.vue'
-import PhotoGrid from '@/components/PhotoGrid.vue'
+import PhotoSwiper from '@/components/PhotoSwiper.vue'
 import Calendar from '@/components/Calendar.vue'
 import Dday from '@/components/Dday.vue'
 import Map from '@/components/Map.vue'
@@ -49,20 +49,15 @@ import ContentSection from '@/components/ContentSection.vue'
         </div>
       </ContentSection>
       <!-- e : 초대 문구 섹션 -->
-      <!-- s: 신랑신부 소개  섹션 -->
-      <!-- <section>
-
-      </section> -->
-      <!-- e : 신랑신부 소개 섹션 -->
       <!-- s : 달력 -->
-      <ContentSection>
+      <ContentSection class="px-4">
         <Title title="SCHEDULE" description="2026년 12월 19일 오전 11시"/>
         <Calendar />
         <Dday />
       </ContentSection>
       <!-- e : 달력 섹션 -->
       <!-- s : 오시는 길 -->
-      <ContentSection padded>
+      <ContentSection>
         <Title title="오시는 길">
           <p>강동 루벨 35층</p>
           <p>서울 강동구 천호대로 1077 이스트센트럴타워 35층</p>
@@ -73,10 +68,9 @@ import ContentSection from '@/components/ContentSection.vue'
       <!-- s: 사진 섹션 -->
       <ContentSection>
         <Title title="Gallery" description="함께한 시간들을 기억해주세요."/>
-        <PhotoGrid />
+        <PhotoSwiper />
       </ContentSection>
       <!-- e : 사진 섹션 -->
-
       <!-- s : 계좌번호 -->
       <ContentSection>
         <Title title="마음 전하실 곳">

@@ -167,13 +167,13 @@ onUnmounted(() => {
   <Teleport to="body">
     <div
       v-if="isWriteOpen"
-      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-6"
+      class="fixed inset-0 z-50 flex items-center justify-center pc:bg-black/50 pc:px-6"
       role="dialog"
       aria-modal="true"
       aria-labelledby="guestbook-write-title"
       @click.self="closeWrite"
     >
-      <div class="w-full max-w-[343px] rounded-xl bg-beige1 p-6 text-left">
+      <div class="w-full mo:h-full pc:max-w-[343px] bg-beige1 p-6 text-left">
         <div class="mb-5 flex items-center justify-between">
           <h3 id="guestbook-write-title" class="body1 text-title">메시지 작성</h3>
           <button
@@ -234,7 +234,7 @@ onUnmounted(() => {
 
           <button
             type="submit"
-            class="body2 mt-1 w-full rounded-full bg-primary1 py-3 text-white"
+            class="body2 mt-1 w-full rounded-full border-primary1 border py-3 text-primary1"
           >
             작성하기
           </button>

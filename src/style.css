@@ -109,15 +109,10 @@
   em {
     @apply not-italic;
   }
-  table caption {
-    @apply hidden size-0 overflow-hidden text-transparent opacity-0;
-  }
-
   a, a:hover {
     color: unset;
   }
 
-  b,
   strong {
     @apply font-semibold;
   }
