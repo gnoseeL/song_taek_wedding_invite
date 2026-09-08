@@ -1,10 +1,20 @@
 <script setup>
-import { onUnmounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
+import {
+  createGuestbookMessage,
+  deleteGuestbookMessage,
+  listGuestbookMessages,
+  mapGuestbookMessage,
+  subscribeGuestbookMessages,
+} from '@/lib/guestbook'
+import { isSupabaseConfigured } from '@/lib/supabase'
 
-const STORAGE_KEY = 'song-taek-wedding-comments'
-
-const comments = ref(loadComments())
+const comments = ref([])
 const isWriteOpen = ref(false)
+const isLoading = ref(false)
+const isSubmitting = ref(false)
+const deletingId = ref('')
+const loadError = ref('')
 const form = ref(emptyForm())
 const errorMessage = ref('')
 
@@ -16,18 +26,15 @@ function emptyForm() {
   }
 }
 
-function loadComments() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    const parsed = raw ? JSON.parse(raw) : []
-    return Array.isArray(parsed) ? parsed : []
-  } catch {
-    return []
-  }
-}
+function toErrorMessage(error, fallback) {
+  const message = error?.message ?? ''
 
-function saveComments() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(comments.value))
+  if (message.includes('방명록 설정')) return message
+  if (message.includes('invalid_name')) return '이름을 확인해주세요.'
+  if (message.includes('invalid_content')) return '내용을 확인해주세요.'
+  if (message.includes('invalid_password')) return '비밀번호를 확인해주세요.'
+
+  return fallback
 }
 
 function formatDate(timestamp) {
@@ -43,6 +50,40 @@ function formatDate(timestamp) {
   return `${year}. ${month}. ${day}`
 }
 
+async function loadComments() {
+  if (!isSupabaseConfigured) {
+    loadError.value = '방명록 설정이 완료되지 않았습니다.'
+    comments.value = []
+    return
+  }
+
+  isLoading.value = true
+  loadError.value = ''
+
+  try {
+    comments.value = await listGuestbookMessages()
+  } catch (error) {
+    loadError.value = toErrorMessage(error, '메시지를 불러오지 못했습니다.')
+  } finally {
+    isLoading.value = false
+  }
+}
+
+function applyRealtimeChange(payload) {
+  if (payload.eventType === 'INSERT' && payload.new) {
+    const message = mapGuestbookMessage(payload.new)
+    comments.value = [
+      message,
+      ...comments.value.filter((item) => item.id !== message.id),
+    ]
+    return
+  }
+
+  if (payload.eventType === 'DELETE' && payload.old?.id) {
+    comments.value = comments.value.filter((item) => item.id !== payload.old.id)
+  }
+}
+
 function openWrite() {
   form.value = emptyForm()
   errorMessage.value = ''
@@ -50,10 +91,11 @@ function openWrite() {
 }
 
 function closeWrite() {
+  if (isSubmitting.value) return
   isWriteOpen.value = false
 }
 
-function submitComment() {
+async function submitComment() {
   const name = form.value.name.trim()
   const content = form.value.content.trim()
   const password = form.value.password.trim()
@@ -63,31 +105,48 @@ function submitComment() {
     return
   }
 
-  comments.value = [
-    {
-      id: crypto.randomUUID(),
-      name,
-      content,
-      password,
-      createdAt: Date.now(),
-    },
-    ...comments.value,
-  ]
-  saveComments()
-  closeWrite()
+  isSubmitting.value = true
+  errorMessage.value = ''
+
+  try {
+    const message = await createGuestbookMessage({ name, content, password })
+    comments.value = [
+      message,
+      ...comments.value.filter((item) => item.id !== message.id),
+    ]
+    isWriteOpen.value = false
+  } catch (error) {
+    errorMessage.value = toErrorMessage(error, '메시지 작성에 실패했습니다.')
+  } finally {
+    isSubmitting.value = false
+  }
 }
 
-function removeComment(comment) {
+async function removeComment(comment) {
   const password = window.prompt('비밀번호를 입력해주세요.')
   if (password === null) return
 
-  if (password !== comment.password) {
-    window.alert('비밀번호가 일치하지 않습니다.')
+  const trimmed = password.trim()
+  if (!trimmed) {
+    window.alert('비밀번호를 입력해주세요.')
     return
   }
 
-  comments.value = comments.value.filter((item) => item.id !== comment.id)
-  saveComments()
+  deletingId.value = comment.id
+
+  try {
+    const deleted = await deleteGuestbookMessage(comment.id, trimmed)
+    if (!deleted) {
+      window.alert('비밀번호가 일치하지 않습니다.')
+      return
+    }
+
+    comments.value = comments.value.filter((item) => item.id !== comment.id)
+  } catch (error) {
+    window.alert(toErrorMessage(error, '메시지 삭제에 실패했습니다.'))
+  } finally {
+    deletingId.value = ''
+  }
 }
 
 function onKeydown(event) {
@@ -104,7 +163,14 @@ watch(isWriteOpen, (open) => {
   }
 })
 
+const unsubscribeRealtime = subscribeGuestbookMessages(applyRealtimeChange)
+
+onMounted(() => {
+  loadComments()
+})
+
 onUnmounted(() => {
+  unsubscribeRealtime()
   document.body.style.overflow = ''
   window.removeEventListener('keydown', onKeydown)
 })
@@ -120,7 +186,22 @@ onUnmounted(() => {
       작성하기
     </button>
 
-    <p v-if="comments.length === 0" class="body3 py-8 text-description">
+    <p v-if="isLoading" class="body3 py-8 text-description">
+      메시지를 불러오는 중...
+    </p>
+
+    <div v-else-if="loadError" class="flex flex-col items-center gap-3 py-8">
+      <p class="body3 text-description">{{ loadError }}</p>
+      <button
+        type="button"
+        class="body2 rounded-full border border-primary1 px-4 py-1.5 text-primary1"
+        @click="loadComments"
+      >
+        다시 시도
+      </button>
+    </div>
+
+    <p v-else-if="comments.length === 0" class="body3 py-8 text-description">
       아직 작성된 메시지가 없습니다.
     </p>
 
@@ -139,8 +220,9 @@ onUnmounted(() => {
           </div>
           <button
             type="button"
-            class="flex size-6 shrink-0 items-center justify-center text-description"
+            class="flex size-6 shrink-0 items-center justify-center text-description disabled:opacity-40"
             :aria-label="`${comment.name}님 메시지 삭제`"
+            :disabled="deletingId === comment.id"
             @click="removeComment(comment)"
           >
             <svg
@@ -178,8 +260,9 @@ onUnmounted(() => {
           <h3 id="guestbook-write-title" class="body1 text-title">메시지 작성</h3>
           <button
             type="button"
-            class="flex size-8 items-center justify-center text-description"
+            class="flex size-8 items-center justify-center text-description disabled:opacity-40"
             aria-label="닫기"
+            :disabled="isSubmitting"
             @click="closeWrite"
           >
             <svg
@@ -205,6 +288,7 @@ onUnmounted(() => {
               type="text"
               maxlength="20"
               autocomplete="name"
+              :disabled="isSubmitting"
               class="body1 rounded-md border border-beige2 bg-white px-3 py-2.5 text-title"
             />
           </label>
@@ -215,6 +299,7 @@ onUnmounted(() => {
               v-model="form.content"
               rows="4"
               maxlength="300"
+              :disabled="isSubmitting"
               class="body1 resize-none rounded-md border border-beige2 bg-white px-3 py-2.5 text-title"
             />
           </label>
@@ -226,6 +311,7 @@ onUnmounted(() => {
               type="password"
               maxlength="20"
               autocomplete="new-password"
+              :disabled="isSubmitting"
               class="body1 rounded-md border border-beige2 bg-white px-3 py-2.5 text-title"
             />
           </label>
@@ -234,9 +320,10 @@ onUnmounted(() => {
 
           <button
             type="submit"
-            class="body2 mt-1 w-full rounded-full border-primary1 border py-3 text-primary1"
+            class="body2 mt-1 w-full rounded-full border-primary1 border py-3 text-primary1 disabled:opacity-40"
+            :disabled="isSubmitting"
           >
-            작성하기
+            {{ isSubmitting ? '작성 중...' : '작성하기' }}
           </button>
         </form>
       </div>

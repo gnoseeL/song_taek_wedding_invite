@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onUnmounted, ref, shallowRef } from 'vue'
+import { nextTick, onMounted, onUnmounted, ref, shallowRef } from 'vue'
 
 const PLACE = {
   name: '강동 루벨',
@@ -9,29 +9,55 @@ const PLACE = {
   placeId: '1064180088',
 }
 
-const CALLBACK_NAME = '__initNaverWeddingMap'
+const SCRIPT_ID = 'naver-map-script'
 const clientId = import.meta.env.VITE_NAVER_MAP_CLIENT_ID
 const mapEl = ref(null)
 const loadError = ref(!clientId)
 const mapInstance = shallowRef(null)
 
-const naverMapUrl = `https://map.naver.com/p/entry/place/1064180088`
+const naverMapUrl = `https://map.naver.com/p/entry/place/${PLACE.placeId}`
 const kakaoMapUrl = `https://place.map.kakao.com/1185379934`
+const tmapUrl = `https://tmap.life/b1659d7d`
+
+let cancelled = false
+let retryTimer = 0
+let resizeObserver = null
 
 function fail() {
-  loadError.value = true
+  if (!cancelled) loadError.value = true
+}
+
+function getSize(el) {
+  const width = Math.round(el.getBoundingClientRect().width || el.clientWidth || el.offsetWidth)
+  const height = Math.round(el.getBoundingClientRect().height || el.clientHeight || el.offsetHeight)
+  return { width, height }
+}
+
+function syncSize() {
+  const el = mapEl.value
+  const map = mapInstance.value
+  if (!el || !map || !window.naver?.maps) return
+
+  const { width, height } = getSize(el)
+  if (width < 1 || height < 1) return
+
+  map.setSize(new window.naver.maps.Size(width, height))
 }
 
 function initMap() {
-  if (!mapEl.value || !window.naver?.maps) {
-    fail()
-    return
-  }
+  if (cancelled || mapInstance.value) return true
+
+  const el = mapEl.value
+  if (!el || !window.naver?.maps) return false
+
+  const { width, height } = getSize(el)
+  if (width < 1 || height < 1) return false
 
   const position = new window.naver.maps.LatLng(PLACE.lat, PLACE.lng)
-  const map = new window.naver.maps.Map(mapEl.value, {
+  const map = new window.naver.maps.Map(el, {
     center: position,
     zoom: 16,
+    size: new window.naver.maps.Size(width, height),
     scaleControl: false,
     logoControl: true,
     mapDataControl: false,
@@ -45,24 +71,40 @@ function initMap() {
   })
 
   mapInstance.value = map
+  resizeObserver = new ResizeObserver(syncSize)
+  resizeObserver.observe(el)
+  return true
+}
+
+function tryInit(attempt = 0) {
+  if (cancelled || mapInstance.value) return
+  if (initMap()) return
+  if (attempt >= 40) {
+    fail()
+    return
+  }
+  retryTimer = window.setTimeout(() => tryInit(attempt + 1), 50)
 }
 
 function loadScript() {
   window.navermap_authFailure = fail
 
   if (window.naver?.maps) {
-    initMap()
+    nextTick(() => tryInit())
     return
   }
 
-  window[CALLBACK_NAME] = initMap
-
-  const existing = document.getElementById('naver-map-script')
-  if (existing) return
+  const existing = document.getElementById(SCRIPT_ID)
+  if (existing) {
+    existing.addEventListener('load', () => tryInit(), { once: true })
+    nextTick(() => tryInit())
+    return
+  }
 
   const script = document.createElement('script')
-  script.id = 'naver-map-script'
-  script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${encodeURIComponent(clientId)}&callback=${CALLBACK_NAME}`
+  script.id = SCRIPT_ID
+  script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${encodeURIComponent(clientId)}`
+  script.onload = () => tryInit()
   script.onerror = fail
   document.head.appendChild(script)
 }
@@ -72,8 +114,12 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  cancelled = true
+  window.clearTimeout(retryTimer)
+  resizeObserver?.disconnect()
+  resizeObserver = null
   mapInstance.value?.destroy?.()
-  delete window[CALLBACK_NAME]
+  mapInstance.value = null
   if (window.navermap_authFailure === fail) {
     delete window.navermap_authFailure
   }
@@ -82,9 +128,8 @@ onUnmounted(() => {
 
 <template>
   <div class="flex flex-col gap-4">
-    <div class="overflow-hidden bg-beige2">
+    <div class="relative overflow-hidden bg-beige2">
       <div
-        v-show="!loadError"
         ref="mapEl"
         class="h-[240px] w-full"
         role="application"
@@ -95,7 +140,7 @@ onUnmounted(() => {
         :href="naverMapUrl"
         target="_blank"
         rel="noopener noreferrer"
-        class="flex h-[240px] w-full flex-col items-center justify-center gap-2 px-6 text-gray6"
+        class="absolute inset-0 flex flex-col items-center justify-center gap-2 px-6 text-gray6"
       >
         <p class="body1">지도를 불러오지 못했습니다.</p>
         <p class="caption1 text-primary1">네이버 지도에서 보기</p>
@@ -117,6 +162,14 @@ onUnmounted(() => {
       class="body1 text-gray7 underline underline-offset-4"
     >
       Kakao 지도에서 보기
+    </a>
+    <a 
+      :href="tmapUrl"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="body1 text-gray7 underline underline-offset-4"
+    >
+      Tmap 지도에서 보기
     </a>
   </div>
 </template>
