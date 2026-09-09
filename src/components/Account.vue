@@ -44,7 +44,7 @@ onUnmounted(() => {
   <div class="flex flex-col gap-3 px-6">
     <SideToggle v-model="selectedSide" name="account-side" />
 
-    <ul class="divide-y divide-black/5 rounded-lg bg-beige2 px-5 text-left">
+    <ul class="divide-y divide-black/5 rounded-lg bg-white px-5 text-left">
       <li
         v-for="account in currentSide.accounts"
         :key="account.id"

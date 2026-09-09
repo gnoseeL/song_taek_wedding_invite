@@ -128,7 +128,7 @@ onUnmounted(() => {
 
 <template>
   <div class="flex flex-col gap-4">
-    <div class="relative overflow-hidden bg-beige2">
+    <div class="relative overflow-hidden bg-white">
       <div
         ref="mapEl"
         class="h-[240px] w-full"

@@ -32,7 +32,7 @@ function setThumbsSwiper(swiper) {
       class="main-swiper"
     >
       <SwiperSlide v-for="photo in photos" :key="photo.id">
-        <div class="aspect-[3/4] overflow-hidden bg-beige2">
+        <div class="aspect-[3/4] overflow-hidden bg-white">
           <img
             :src="photo.src"
             :alt="photo.alt"
@@ -56,7 +56,7 @@ function setThumbsSwiper(swiper) {
       @swiper="setThumbsSwiper"
     >
       <SwiperSlide v-for="photo in photos" :key="`thumb-${photo.id}`">
-        <div class="aspect-square overflow-hidden bg-beige2">
+        <div class="aspect-square overflow-hidden bg-white">
           <img
             :src="photo.src"
             :alt="photo.alt"

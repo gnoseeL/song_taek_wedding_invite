@@ -209,7 +209,7 @@ onUnmounted(() => {
       <li
         v-for="comment in comments"
         :key="comment.id"
-        class="rounded-lg bg-beige2 px-5 py-4"
+        class="rounded-lg bg-white px-5 py-4"
       >
         <div class="flex items-start justify-between gap-3">
           <div class="min-w-0">
@@ -289,7 +289,7 @@ onUnmounted(() => {
               maxlength="20"
               autocomplete="name"
               :disabled="isSubmitting"
-              class="body1 rounded-md border border-beige2 bg-white px-3 py-2.5 text-title"
+              class="body1 rounded-md border border-white bg-white px-3 py-2.5 text-title"
             />
           </label>
 
@@ -300,7 +300,7 @@ onUnmounted(() => {
               rows="4"
               maxlength="300"
               :disabled="isSubmitting"
-              class="body1 resize-none rounded-md border border-beige2 bg-white px-3 py-2.5 text-title"
+              class="body1 resize-none rounded-md border border-white bg-white px-3 py-2.5 text-title"
             />
           </label>
 
@@ -312,7 +312,7 @@ onUnmounted(() => {
               maxlength="20"
               autocomplete="new-password"
               :disabled="isSubmitting"
-              class="body1 rounded-md border border-beige2 bg-white px-3 py-2.5 text-title"
+              class="body1 rounded-md border border-white bg-white px-3 py-2.5 text-title"
             />
           </label>
 
