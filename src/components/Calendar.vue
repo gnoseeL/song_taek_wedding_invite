@@ -10,30 +10,34 @@ const cells = [
   ...Array(firstDayOfWeek).fill(null),
   ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
 ]
+
+const isSunday = (index) => index % 7 === 0
 </script>
 
 <template>
-  <div class="py-1 border border-detail border-x-0" role="grid" aria-label="2026년 12월 달력">
+  <div class="py-3 border border-detail/70 border-x-0" role="grid" aria-label="2026년 12월 달력">
     <div class="grid grid-cols-7 text-center">
       <span
-        v-for="day in weekdays"
+        v-for="(day, weekdayIndex) in weekdays"
         :key="day"
-        class="caption1 py-2 text-gray5"
+        class="caption1 py-2"
+        :class="isSunday(weekdayIndex) ? 'text-primary1' : 'text-gray5'"
       >
         {{ day }}
       </span>
       <span
         v-for="(day, index) in cells"
         :key="index"
-        class="relative flex h-10 items-center justify-center body2 text-gray7"
+        class="relative flex h-10 items-center justify-center body2"
+        :class="isSunday(index) ? 'text-red1' : 'text-gray7'"
       >
         <span
           v-if="day === weddingDay"
-          class="absolute size-8 rounded-full border border-primary2 shadow-md"
+          class="-z-1 absolute size-8 rounded-full bg-primary1 shadow-md"
           aria-hidden="true"
         />
         <span
-          :class="day === weddingDay ? 'font-semibold text-primary1 ' : ''"
+          :class="day === weddingDay ? 'font-semibold text-white' : ''"
         >
           {{ day ?? '' }}
         </span>

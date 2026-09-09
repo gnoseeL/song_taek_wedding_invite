@@ -146,30 +146,31 @@ onUnmounted(() => {
         <p class="caption1 text-primary1">네이버 지도에서 보기</p>
       </a>
     </div>
-
-    <a
-      :href="naverMapUrl"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="body1 text-gray7 underline underline-offset-4"
-    >
-      네이버 지도에서 보기
-    </a>
-    <a
-      :href="kakaoMapUrl"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="body1 text-gray7 underline underline-offset-4"
-    >
-      Kakao 지도에서 보기
-    </a>
-    <a 
-      :href="tmapUrl"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="body1 text-gray7 underline underline-offset-4"
-    >
-      Tmap 지도에서 보기
-    </a>
+    <div class="flex items-center gap-2 justify-center mt-3">
+      <a
+        :href="naverMapUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="border border-detail rounded-sm px-2 py-2 bg-white"
+      >
+        <span class="relative body3 pl-6 before:content-[''] before:absolute before:top-1/2 before:left-0 before:-translate-y-1/2 before:size-5 before:bg-[url('/images/common/ico_nav03.png')] before:bg-no-repeat before:bg-center before:bg-contain">네이버 지도</span>
+      </a>
+      <a
+        :href="kakaoMapUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="border border-detail rounded-sm px-2 py-2 bg-white"
+      >
+        <span class="relative body3 pl-6 before:content-[''] before:absolute before:top-1/2 before:left-0 before:-translate-y-1/2 before:size-5 before:bg-[url('/images/common/ico_nav01.png')] before:bg-no-repeat before:bg-center before:bg-contain">Kakao 지도</span>
+      </a>
+      <a 
+        :href="tmapUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="border border-detail rounded-sm px-2 py-2 bg-white"
+      >
+        <span class="relative body3 pl-6 before:content-[''] before:absolute before:top-1/2 before:left-0 before:-translate-y-1/2 before:size-5 before:bg-[url('/images/common/ico_nav02.png')] before:bg-no-repeat before:bg-center before:bg-contain">Tmap 지도</span>
+      </a>
+    </div>
   </div>
 </template>

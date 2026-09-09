@@ -255,7 +255,7 @@ onUnmounted(() => {
       aria-labelledby="guestbook-write-title"
       @click.self="closeWrite"
     >
-      <div class="w-full mo:h-full pc:max-w-[343px] bg-beige1 p-6 text-left">
+      <div class="w-full mo:h-full pc:max-w-[343px] bg-bg p-6 text-left">
         <div class="mb-5 flex items-center justify-between">
           <h3 id="guestbook-write-title" class="body1 text-title">메시지 작성</h3>
           <button
