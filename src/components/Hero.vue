@@ -1,5 +1,5 @@
 <template>
-  <section class="sticky top-0 z-0 mo:h-screen pc:h-161 overflow-hidden">
+  <section class="sticky top-0 z-0 mo:h-svh pc:h-161 overflow-hidden">
     <img
       src="/images/photo/bg_01.jpg"
       alt=""
