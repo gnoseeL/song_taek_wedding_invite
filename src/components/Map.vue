@@ -16,8 +16,12 @@ const loadError = ref(!clientId)
 const mapInstance = shallowRef(null)
 
 const naverMapUrl = `https://map.naver.com/p/entry/place/${PLACE.placeId}`
-const kakaoMapUrl = `https://place.map.kakao.com/1185379934`
-const tmapUrl = `https://tmap.life/b1659d7d`
+
+const mapLinks = [
+  { label: '네이버 지도', href: naverMapUrl, icon: '/images/common/ico_nav03.png' },
+  { label: 'Kakao 지도', href: 'https://place.map.kakao.com/1185379934', icon: '/images/common/ico_nav01.png' },
+  { label: 'Tmap 지도', href: 'https://tmap.life/b1659d7d', icon: '/images/common/ico_nav02.png' },
+]
 
 let cancelled = false
 let retryTimer = 0
@@ -57,11 +61,17 @@ function initMap() {
   const map = new window.naver.maps.Map(el, {
     center: position,
     zoom: 16,
+    minZoom: 16,
+    maxZoom: 16,
     size: new window.naver.maps.Size(width, height),
     scaleControl: false,
     logoControl: true,
     mapDataControl: false,
     zoomControl: false,
+    scrollWheel: false,
+    pinchZoom: false,
+    disableDoubleClickZoom: true,
+    keyboardShortcuts: false,
   })
 
   new window.naver.maps.Marker({
@@ -148,28 +158,15 @@ onUnmounted(() => {
     </div>
     <div class="flex items-center gap-2 justify-center mt-3">
       <a
-        :href="naverMapUrl"
+        v-for="link in mapLinks"
+        :key="link.label"
+        :href="link.href"
         target="_blank"
         rel="noopener noreferrer"
-        class="border border-detail rounded-sm px-2 py-2 bg-white"
+        class="border border-primary1 rounded-sm px-2 py-2 bg-white flex items-center justify-center gap-1.5"
       >
-        <span class="relative body3 pl-6 before:content-[''] before:absolute before:top-1/2 before:left-0 before:-translate-y-1/2 before:size-5 before:bg-[url('/images/common/ico_nav03.png')] before:bg-no-repeat before:bg-center before:bg-contain">네이버 지도</span>
-      </a>
-      <a
-        :href="kakaoMapUrl"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="border border-detail rounded-sm px-2 py-2 bg-white"
-      >
-        <span class="relative body3 pl-6 before:content-[''] before:absolute before:top-1/2 before:left-0 before:-translate-y-1/2 before:size-5 before:bg-[url('/images/common/ico_nav01.png')] before:bg-no-repeat before:bg-center before:bg-contain">Kakao 지도</span>
-      </a>
-      <a 
-        :href="tmapUrl"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="border border-detail rounded-sm px-2 py-2 bg-white"
-      >
-        <span class="relative body3 pl-6 before:content-[''] before:absolute before:top-1/2 before:left-0 before:-translate-y-1/2 before:size-5 before:bg-[url('/images/common/ico_nav02.png')] before:bg-no-repeat before:bg-center before:bg-contain">Tmap 지도</span>
+        <img :src="link.icon" alt="" class="size-5" aria-hidden="true" />
+        <span class="text-primary1 body3">{{ link.label }}</span>
       </a>
     </div>
   </div>

@@ -178,14 +178,6 @@ onUnmounted(() => {
 
 <template>
   <div class="flex flex-col gap-4 px-6">
-    <button
-      type="button"
-      class="body2 mx-auto rounded-full bg-primary1 px-5 py-2.5 text-white"
-      @click="openWrite"
-    >
-      작성하기
-    </button>
-
     <p v-if="isLoading" class="body3 py-8 text-description">
       메시지를 불러오는 중...
     </p>
@@ -244,6 +236,14 @@ onUnmounted(() => {
         </p>
       </li>
     </ul>
+
+    <button
+      type="button"
+      class="body2 ml-auto mt-1 rounded-full border-primary1 border px-11 py-3 text-primary1 disabled:opacity-40"
+      @click="openWrite"
+    >
+      작성하기
+    </button>
   </div>
 
   <Teleport to="body">

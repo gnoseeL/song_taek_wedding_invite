@@ -45,7 +45,14 @@ import ContentSection from '@/components/ContentSection.vue'
         </div>
       </div>
       <div class="w-full h-auto">
-        <img src="/images/photo/bg_02.PNG" loading="lazy" alt="" class="w-full object-contain"/>
+        <img
+          src="/images/photo/bg_02.jpg"
+          loading="lazy"
+          alt=""
+          width="1200"
+          height="800"
+          class="w-full object-contain"
+        />
       </div>
     </ContentSection>
     <!-- e : 초대 문구 섹션 -->
@@ -58,9 +65,8 @@ import ContentSection from '@/components/ContentSection.vue'
     <!-- e : 달력 섹션 -->
     <!-- s : 오시는 길 -->
     <ContentSection>
-      <Title title="LOCATION">
-        <p>강동 루벨 35층</p>
-        <p>서울 강동구 천호대로 1077 이스트센트럴타워 35층</p>
+      <Title title="LOCATION" description="강동 루벨 35층">
+        <p>서울 강동구 천호대로 1077 이스트센트럴타워</p>
       </Title>
       <Map />
     </ContentSection>
@@ -82,9 +88,7 @@ import ContentSection from '@/components/ContentSection.vue'
     <!-- e : 계좌번호 -->
     <!-- s : 축하 메시지 -->
     <ContentSection>
-      <Title title="축하 메시지">
-        <p>따뜻한 마음을 남겨주세요.</p>
-      </Title>
+      <Title title="GUESTBOOK" description="여러분의 따뜻한 마음을 남겨주세요."/>
       <Guestbook />
     </ContentSection>
     <!-- e : 축하 메시지 -->

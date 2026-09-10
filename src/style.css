@@ -3,16 +3,13 @@
 @theme {
 
   /* Colors */
-  --color-default: black;
-  --color-primary1: #660202;
+  --color-primary1: #35483D;
   --color-title: #0f0606;
-  --color-sub-title: #1a1a1a;
-  --color-description: #72716e;
-  --color-detail: #adadad;
-  --color-black: #000000;
+  --color-sub: #59615B;
+  --color-description: #59615B;
   --color-bg: #fafafa;
-  --color-red1: #b27085;
-  --color-red2: #f79e9e;
+  --color-html:#E6E9E6;
+  --color-black: #000000;
   --color-white: #ffffff;
 
   /* Font */
@@ -66,7 +63,7 @@
     font-family: var(--font-default-family), serif;
   }
   html {
-    @apply text-title bg-white font-normal;
+    @apply text-title bg-html font-normal;
     font-family: var(--font-default-family), serif;
   }
   html[lang='ko'] {

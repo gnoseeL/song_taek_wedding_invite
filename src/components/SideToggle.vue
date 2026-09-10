@@ -19,7 +19,7 @@ const options = [
 
 <template>
   <div
-    class="relative grid grid-cols-2 rounded-full bg-[#e8e6e2] p-1"
+    class="relative grid grid-cols-2 rounded-full bg-sub/25 p-1"
     role="radiogroup"
     aria-label="계좌 구분"
   >
@@ -41,7 +41,7 @@ const options = [
       />
       <span
         class="body2 transition-colors duration-300"
-        :class="model === option.value ? 'text-title' : 'text-detail'"
+        :class="model === option.value ? 'text-title' : 'text-title/08'"
       >
         {{ option.label }}
       </span>

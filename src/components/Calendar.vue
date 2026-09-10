@@ -15,7 +15,7 @@ const isSunday = (index) => index % 7 === 0
 </script>
 
 <template>
-  <div class="py-3 border border-detail/70 border-x-0" role="grid" aria-label="2026년 12월 달력">
+  <div class="py-3 border border-black/5 border-x-0" role="grid" aria-label="2026년 12월 달력">
     <div class="grid grid-cols-7 text-center">
       <span
         v-for="(day, weekdayIndex) in weekdays"
