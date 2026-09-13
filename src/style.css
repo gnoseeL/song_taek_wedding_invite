@@ -14,7 +14,7 @@
 
   /* Font */
   --font-default-family: "Noto Serif KR";
-  --font-sans: "Noto Serif KR", serif;
+  --font-sans: "Noto Sans", sans-serif;
   --font-serif: "Noto Serif KR", serif;
 
   /* Font Weight */
@@ -59,9 +59,6 @@
 @custom-variant mo (@media (max-width: 64rem));
 
 @layer base {
-  * {
-    font-family: var(--font-default-family), serif;
-  }
   html {
     @apply text-title bg-html font-normal;
     font-family: var(--font-default-family), serif;
@@ -163,6 +160,9 @@
 
   .body3 {
     @apply pc:text-sm/[18px] text-xs/[16px];
+  }
+  .body4 {
+    @apply text-8xl;
   }
 }
 

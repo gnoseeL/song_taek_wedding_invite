@@ -3,7 +3,14 @@ import { computed, onUnmounted, ref } from 'vue'
 import { accountSides } from '@/data/accounts'
 import SideToggle from '@/components/SideToggle.vue'
 
-const selectedSide = ref('bride')
+function getSideFromQuery() {
+  const side = new URLSearchParams(window.location.search).get('side')
+  if (side === '1') return 'bride'
+  if (side === '2') return 'groom'
+  return 'bride'
+}
+
+const selectedSide = ref(getSideFromQuery())
 const copiedId = ref('')
 let copiedTimer
 
