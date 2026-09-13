@@ -57,6 +57,7 @@ function initMap() {
   const { width, height } = getSize(el)
   if (width < 1 || height < 1) return false
 
+  const isMobile = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches
   const position = new window.naver.maps.LatLng(PLACE.lat, PLACE.lng)
   const map = new window.naver.maps.Map(el, {
     center: position,
@@ -72,6 +73,7 @@ function initMap() {
     pinchZoom: false,
     disableDoubleClickZoom: true,
     keyboardShortcuts: false,
+    draggable: !isMobile,
   })
 
   new window.naver.maps.Marker({
