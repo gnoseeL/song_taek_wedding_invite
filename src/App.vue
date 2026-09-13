@@ -13,17 +13,17 @@ import BackgroundMusic from '@/components/BackgroundMusic.vue'
 </script>
 
 <template>
-  <div class="relative">
+  <div>
     <BackgroundMusic />
     <div class="mo:hidden fixed bottom-0 left-0 w-full">
       <p class="text-white/80 body4">COME</p>
       <p class="text-white/80 body4">CELEBRATE</p>
     </div>
-    <main class="flex min-h-dvh flex-col text-center pc:mx-auto pc:w-[430px] shadow-md">
+    <main class="relative text-center pc:mx-auto pc:w-[430px] shadow-md">
       <!-- s: 시작 배너 -->
       <Hero />
       <!-- e : 시작 배너 -->
-      <div class="relative z-10 flex flex-col gap-20 bg-bg py-16">
+      <div class="relative z-10 space-y-20 bg-bg py-16">
         <!-- s: 초대 문구 섹션 -->
         <ContentSection>
           <Title title="INVITATION" as="h1" description="소중한 분들을 초대합니다.">
@@ -35,18 +35,18 @@ import BackgroundMusic from '@/components/BackgroundMusic.vue'
           <div class="relative before:content-[''] before:absolute before:top-0 before:left-1/2 before:-translate-x-1/2 before:w-14 before:h-px before:bg-detail pt-11">
             <div class="flex items-center justify-center text-title gap-3">
               <div class="flex items-center gap-1">
-                <span>행봉</span>
-                <em class="text-description">·</em>
                 <span>재란</span>
+                <em class="text-description">·</em>
+                <span>행봉</span>
               </div>
               <span class="text-description">의 딸</span>
               <strong>이송</strong>
             </div>
             <div class="flex items-center justify-center text-title gap-3">
               <div class="flex items-center gap-1">
-                <span>국빈</span>
-                <em class="text-description">·</em>
                 <span>현정</span>
+                <em class="text-description">·</em>
+                <span>국빈</span>
               </div>
               <span class="text-description">의 아들</span>
               <strong>김형택</strong>
