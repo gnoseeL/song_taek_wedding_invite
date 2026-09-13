@@ -8,7 +8,7 @@ let observer
 const lines = [
   ['JOIN US', 'AS', 'WE', 'BECOME ONE'],
   ['19', 'DECEMBER', '2026'],
-  ['SATURDAY', 'PM 11:00'],
+  ['SATURDAY', 'AM 11:00'],
 ]
 
 const STAGGER_MS = 180
