@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import {
   createGuestbookMessage,
   deleteGuestbookMessage,
@@ -9,7 +9,10 @@ import {
 } from '@/lib/guestbook'
 import { isSupabaseConfigured } from '@/lib/supabase'
 
+const PAGE_SIZE = 5
+
 const comments = ref([])
+const currentPage = ref(1)
 const isWriteOpen = ref(false)
 const isLoading = ref(false)
 const isSubmitting = ref(false)
@@ -17,6 +20,15 @@ const deletingId = ref('')
 const loadError = ref('')
 const form = ref(emptyForm())
 const errorMessage = ref('')
+
+const totalPages = computed(() =>
+  Math.max(1, Math.ceil(comments.value.length / PAGE_SIZE)),
+)
+const showPagination = computed(() => comments.value.length >= PAGE_SIZE)
+const pagedComments = computed(() => {
+  const start = (currentPage.value - 1) * PAGE_SIZE
+  return comments.value.slice(start, start + PAGE_SIZE)
+})
 
 function emptyForm() {
   return {
@@ -114,6 +126,7 @@ async function submitComment() {
       message,
       ...comments.value.filter((item) => item.id !== message.id),
     ]
+    currentPage.value = 1
     isWriteOpen.value = false
   } catch (error) {
     errorMessage.value = toErrorMessage(error, '메시지 작성에 실패했습니다.')
@@ -149,9 +162,23 @@ async function removeComment(comment) {
   }
 }
 
+function goToPage(page) {
+  if (page < 1 || page > totalPages.value || page === currentPage.value) return
+  currentPage.value = page
+}
+
 function onKeydown(event) {
   if (event.key === 'Escape') closeWrite()
 }
+
+watch(
+  () => comments.value.length,
+  () => {
+    if (currentPage.value > totalPages.value) {
+      currentPage.value = totalPages.value
+    }
+  },
+)
 
 watch(isWriteOpen, (open) => {
   document.body.style.overflow = open ? 'hidden' : ''
@@ -199,7 +226,7 @@ onUnmounted(() => {
 
     <ul v-else class="flex flex-col gap-3 text-left">
       <li
-        v-for="comment in comments"
+        v-for="comment in pagedComments"
         :key="comment.id"
         class="rounded-lg bg-white px-5 py-4"
       >
@@ -236,6 +263,69 @@ onUnmounted(() => {
         </p>
       </li>
     </ul>
+
+    <nav
+      v-if="!isLoading && !loadError && showPagination"
+      class="flex items-center justify-center gap-1"
+      aria-label="방명록 페이지"
+    >
+      <button
+        type="button"
+        class="flex size-8 items-center justify-center text-description disabled:opacity-30"
+        aria-label="이전 페이지"
+        :disabled="currentPage === 1"
+        @click="goToPage(currentPage - 1)"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="size-4"
+          aria-hidden="true"
+        >
+          <path d="M15 6l-6 6 6 6" />
+        </svg>
+      </button>
+
+      <button
+        v-for="page in totalPages"
+        :key="page"
+        type="button"
+        class="body3 flex size-8 items-center justify-center rounded-full"
+        :class="page === currentPage ? 'bg-primary1 text-white' : 'text-description'"
+        :aria-label="`${page}페이지`"
+        :aria-current="page === currentPage ? 'page' : undefined"
+        @click="goToPage(page)"
+      >
+        {{ page }}
+      </button>
+
+      <button
+        type="button"
+        class="flex size-8 items-center justify-center text-description disabled:opacity-30"
+        aria-label="다음 페이지"
+        :disabled="currentPage === totalPages"
+        @click="goToPage(currentPage + 1)"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="size-4"
+          aria-hidden="true"
+        >
+          <path d="M9 6l6 6-6 6" />
+        </svg>
+      </button>
+    </nav>
 
     <button
       type="button"
