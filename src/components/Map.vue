@@ -23,6 +23,14 @@ const mapLinks = [
   { label: 'Tmap 지도', href: 'https://tmap.life/b1659d7d', icon: '/images/common/ico_nav02.png' },
 ]
 
+const busGroups = [
+  { label: '간선', routes: ['130', '341', '342', '370'] },
+  { label: '지선', routes: ['3214', '3316', '3324'] },
+  { label: '일반', routes: ['1-4', '30-3', '112-1', '112-5'] },
+  { label: '직행', routes: ['1113', '1113-1', '1113-2', '1113-10', '1113-11'] },
+  { label: '공항버스', routes: ['6200'] },
+]
+
 let cancelled = false
 let retryTimer = 0
 let resizeObserver = null
@@ -170,6 +178,70 @@ onUnmounted(() => {
         <img :src="link.icon" alt="" class="size-5" aria-hidden="true" />
         <span class="text-primary1 body3">{{ link.label }}</span>
       </a>
+    </div>
+
+    <div class="mt-6 flex flex-col items-center gap-8 px-6">
+      <section class="flex flex-col items-center gap-1.5" aria-labelledby="guide-subway">
+        <h3 id="guide-subway" class="body3 inline-flex items-center gap-1.5 text-primary1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="size-3.5 shrink-0" aria-hidden="true">
+            <rect width="16" height="16" x="4" y="3" rx="2" />
+            <path d="M4 11h16" />
+            <path d="M12 3v8" />
+            <path d="m8 19-2 3" />
+            <path d="m18 22-2-3" />
+            <path d="M8 15h.01" />
+            <path d="M16 15h.01" />
+          </svg>
+          지하철
+        </h3>
+        <p class="body2 mt-1 text-title">5호선 강동역 1번 출구 연결</p>
+      </section>
+
+      <div class="h-px w-14 bg-primary1/30" aria-hidden="true" />
+
+      <section class="flex w-full flex-col items-center gap-1.5" aria-labelledby="guide-bus">
+        <h3 id="guide-bus" class="body3 inline-flex items-center gap-1.5 text-primary1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="size-3.5 shrink-0" aria-hidden="true">
+            <path d="M8 6v6" />
+            <path d="M15 6v6" />
+            <path d="M2 12h19.6" />
+            <path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3" />
+            <circle cx="7" cy="18" r="2" />
+            <path d="M9 18h5" />
+            <circle cx="16" cy="18" r="2" />
+          </svg>
+          버스
+        </h3>
+        <p class="body2 mt-1 text-title">버스 이용 시 강동역 하차</p>
+        <ul class="mt-4 flex w-full list-none flex-col gap-4">
+          <li
+            v-for="group in busGroups"
+            :key="group.label"
+            class="flex list-none flex-col items-center gap-1"
+          >
+            <p class="body3 text-title">{{ group.label }}</p>
+            <p class="body3 text-title">
+              <template v-for="(route, index) in group.routes" :key="route">
+                <span v-if="index > 0"> · </span>{{ route }}
+              </template>
+            </p>
+          </li>
+        </ul>
+      </section>
+
+      <div class="h-px w-14 bg-primary1/30" aria-hidden="true" />
+
+      <section class="flex flex-col items-center gap-1.5" aria-labelledby="guide-parking">
+        <h3 id="guide-parking" class="body3 inline-flex items-center gap-1.5 text-primary1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="size-3.5 shrink-0" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M9 17V7h4a3 3 0 0 1 0 6H9" />
+          </svg>
+          주차
+        </h3>
+        <p class="body2 mt-1 text-title">이스트 센트럴 타워 주차장</p>
+        <p class="body3 max-w-64 text-description">검색 후 오피스 방면으로 출입해 주세요.</p>
+      </section>
     </div>
   </div>
 </template>
